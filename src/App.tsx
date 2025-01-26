@@ -37,8 +37,6 @@ function App(): React.JSX.Element {
       setUserId(id);
       setUsername(username);
       setMail(mail);
-    } else {
-      setIsUserEditing(false);
     }
   };
 
