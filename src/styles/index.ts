@@ -23,13 +23,12 @@ export default StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'flex-start',
-    marginLeft: 25,
   },
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    width: '100%',
+    width: '100%'
   },
   buttonGeneral: {
     color: '#1c1c1c',
@@ -43,7 +42,7 @@ export default StyleSheet.create({
   dataList: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginHorizontal: 5,
+    marginHorizontal: 0,
   },
   item: {
     fontFamily: 'DMSans-Regular',

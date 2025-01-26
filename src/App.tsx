@@ -1,34 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, View, ActivityIndicator} from 'react-native';
-import {FirestoreService} from './firebase/service';
 import styles from './styles';
 import {UserList} from './components/UserList';
 import {CreateUserCard} from './components/CreateUserCard';
 import {Button} from './components/Button';
 import {GradientTitle} from './components/GradientTitle';
+import {EditUserCard} from './components/EditUserCard';
 
 function App(): React.JSX.Element {
-  const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [isUserListEnabled, setIsUserListEnabled] = useState(false);
   const [isUserCreating, setIsUserCreating] = useState(false);
+  const [isUserEditing, setIsUserEditing] = useState(false);
   const [userId, setUserId] = useState('');
+  const [username, setUsername] = useState('');
+  const [mail, setMail] = useState('');
+  const [refresh, setRefresh] = useState(false);
 
   // TO DO isRefresh: boolean = false yapmama rağmen yine de illaki false diye belirtmem gerekti, neden
-  const handleGettingUsers = async (isRefresh: boolean) => {
-    if (!isUserListEnabled || isRefresh) {
-      setIsLoading(true);
+  const handleGettingUsers = async () => {
+    if (!isUserListEnabled) {
       setIsUserListEnabled(true);
-
-      await FirestoreService.getUsers(
-        (usersList: User[]) => {
-          setUsers(usersList);
-          setIsLoading(false);
-        },
-        (/* error: any */) => {
-          setIsLoading(false);
-        },
-      );
     } else {
       setIsUserListEnabled(false);
     }
@@ -37,24 +28,17 @@ function App(): React.JSX.Element {
   const handleUserCreation = () => {
     if (!isUserCreating) {
       setIsUserCreating(true);
-      setUserId('');
-    } else {
-      setIsUserCreating(false);
     }
   };
 
-  const handleEditUser = (id: string) => {
-    if (!isUserCreating) {
-      setIsUserCreating(true);
+  const handleEditUser = (id: string, username: string, mail: string) => {
+    if (!isUserEditing) {
+      setIsUserEditing(true);
       setUserId(id);
+      setUsername(username);
+      setMail(mail);
     } else {
-      setIsUserCreating(false);
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsUserCreating(true);
-        setUserId(id);
-      }, 0);
+      setIsUserEditing(false);
     }
   };
 
@@ -66,7 +50,7 @@ function App(): React.JSX.Element {
       <View style={styles.row}>
         <Button
           title={!isUserListEnabled ? 'Show Users' : 'Close User List'}
-          onPress={() => handleGettingUsers(false)}
+          onPress={handleGettingUsers}
           style={
             !isUserListEnabled
               ? {color: 'white', backgroundColor: '#2eb0ff'}
@@ -74,7 +58,7 @@ function App(): React.JSX.Element {
           }
         />
         <Button
-          title={'Create-Update User'}
+          title={'Create User'}
           onPress={handleUserCreation}
           style={
             !isUserCreating
@@ -85,24 +69,27 @@ function App(): React.JSX.Element {
       </View>
       {isUserCreating && (
         <CreateUserCard
-          userId={userId}
-          onLoadingChange={() => setIsLoading}
-          refreshUsers={() => handleGettingUsers(true)}
+          refreshUsers={() => setRefresh(true)}
           setIsUserCreating={() => setIsUserCreating(false)}
         />
       )}
-      {isUserListEnabled && !isLoading && (
-        <UserList
-          users={users}
-          refreshUsers={() => handleGettingUsers(true)}
-          onEdit={id => handleEditUser(id)}
+      {isUserEditing && (
+        <EditUserCard
+          id={userId}
+          username={username}
+          mail={mail}
+          refreshUsers={() => setRefresh(true)}
+          setIsUserEditing={() => setIsUserEditing(false)}
         />
       )}
-      {isLoading && (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size="large" color={'black'} />
-        </View>
-      )}
+      <UserList
+        isEnabled={isUserListEnabled}
+        onEdit={(id: string, username: string, mail: string) =>
+          handleEditUser(id, username, mail)
+        }
+        refresh={refresh}
+        refreshCallback={() => setRefresh(false)}
+      />
     </SafeAreaView>
   );
 }

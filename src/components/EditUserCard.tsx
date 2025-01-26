@@ -14,44 +14,46 @@ import {FirestoreService} from '../firebase/service';
 
 //TO DO son idye bakmak için kullanıcıları getirebilir ve ona göre yeni kullanıcı idsini belirler
 
-export const CreateUserCard: React.FC<CreateUserProps> = ({
+export const EditUserCard: React.FC<EditUserProps> = ({
+  id,
+  username,
+  mail,
   refreshUsers,
-  setIsUserCreating,
+  setIsUserEditing,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const {height, width} = Dimensions.get('window');
-  const [id, setId] = useState('');
-  const [username, setUsername] = useState('');
-  const [mail, setMail] = useState('');
+  const [localId, setLocalId] = useState(id);
+  const [localUsername, setLocalUsername] = useState(username);
+  const [localMail, setLocalMail] = useState(mail);
 
-  const createUser = async (
+  const updateUser = async (
     refreshUsers: () => void,
-    setIsUserCreating: () => void,
+    setIsUserEditing: () => void,
   ) => {
-    // aynı isimli kullanıcıdan varsa kullanıcı zaten var hatası falan fırlatılabilir
+    setIsLoading(true);
     if (username === '' || mail === '') {
       Alert.alert('Please fill in all the blanks!');
       return;
     } else {
-      setIsLoading(true);
       // mail için pattern oluşturulabilir
-      await FirestoreService.createUser(
-        parseInt(id),
-        username,
-        mail,
+      await FirestoreService.updateUser(
+        parseInt(localId),
+        localUsername,
+        localMail,
         (/* error: any */) => {
           setIsLoading(false);
         },
       );
 
       refreshUsers();
-      setIsUserCreating();
+      setIsUserEditing();
     }
   };
 
   const handleCancel = () => {
     if (id === '' && username === '' && mail === '') {
-      setIsUserCreating();
+      setIsUserEditing();
     } else {
       Alert.alert('Are you sure to cancel?', '', [
         {
@@ -60,7 +62,7 @@ export const CreateUserCard: React.FC<CreateUserProps> = ({
         },
         {
           text: 'Yes',
-          onPress: setIsUserCreating,
+          onPress: setIsUserEditing,
         },
       ]);
     }
@@ -85,7 +87,7 @@ export const CreateUserCard: React.FC<CreateUserProps> = ({
             style={{
               marginVertical: 10,
             }}>
-            User Creation
+            User Edition (!)
           </Title>
           <Text style={styles.item}>Id</Text>
           <TextInput
@@ -100,10 +102,10 @@ export const CreateUserCard: React.FC<CreateUserProps> = ({
             keyboardType="numeric"
             onChangeText={value => {
               if (isNumeric(value)) {
-                setId(value);
+                setLocalId(value);
               }
             }}
-            value={id}
+            value={localId}
           />
           <Text style={styles.item}>Username</Text>
           <TextInput
@@ -115,8 +117,10 @@ export const CreateUserCard: React.FC<CreateUserProps> = ({
               fontSize: 15,
               width: '50%',
             }}
-            onChangeText={setUsername}
-            value={username}
+            onChangeText={value => {
+              setLocalUsername(value);
+            }}
+            value={localUsername}
           />
           <Text style={styles.item}>Mail</Text>
           <TextInput
@@ -128,14 +132,16 @@ export const CreateUserCard: React.FC<CreateUserProps> = ({
               fontSize: 15,
               width: '50%',
             }}
-            onChangeText={setMail}
-            value={mail}
+            onChangeText={value => {
+              setLocalMail(value);
+            }}
+            value={localMail}
           />
           <Button
             style={{backgroundColor: '#22f391'}}
             title={'Apply'}
             onPress={() => {
-              createUser(refreshUsers, setIsUserCreating);
+              updateUser(refreshUsers, setIsUserEditing);
             }}></Button>
           <Button
             style={{backgroundColor: '#ff4040'}}

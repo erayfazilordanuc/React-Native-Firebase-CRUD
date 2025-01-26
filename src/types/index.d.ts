@@ -5,16 +5,23 @@ type User = {
 };
 
 type UserListProps = {
-  users: User[];
-  refreshUsers: () => void;
-  onEdit: (id: string) => void;
+  isEnabled: boolean;
+  onEdit: (id: string, username: string, mail: string) => void;
+  refresh: boolean;
+  refreshCallback: () => void;
 };
 
 type CreateUserProps = {
-  userId?: string;
-  onLoadingChange: (state: boolean) => void;
   refreshUsers: () => void;
-  setIsUserCreating: ()=> void;
+  setIsUserCreating: () => void;
+};
+
+type EditUserProps = {
+  id: string;
+  username: string;
+  mail: string;
+  refreshUsers: () => void;
+  setIsUserEditing: () => void;
 };
 
 type ButtonProps = {
