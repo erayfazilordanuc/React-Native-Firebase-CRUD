@@ -16,7 +16,6 @@ function App(): React.JSX.Element {
   const [mail, setMail] = useState('');
   const [refresh, setRefresh] = useState(false);
 
-  // TO DO isRefresh: boolean = false yapmama rağmen yine de illaki false diye belirtmem gerekti, neden
   const handleGettingUsers = async () => {
     if (!isUserListEnabled) {
       setIsUserListEnabled(true);
