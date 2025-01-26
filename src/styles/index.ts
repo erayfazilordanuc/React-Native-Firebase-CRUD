@@ -1,5 +1,7 @@
 import {StyleSheet} from 'react-native';
 
+// TO DO burada genel kullanılmayan stiller kullanıldığı dosya içinde kalabilir
+
 export default StyleSheet.create({
   container: {
     flex: 1,
