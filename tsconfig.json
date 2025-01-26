@@ -1,0 +1,13 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json"
+}
+// {
+//   "extends": "@react-native/typescript-config/tsconfig.json",
+//   "compilerOptions": {
+//     "baseUrl": "./src",
+//     "paths": {
+//       // "@/*": ["src/*"],//TO DO Bu tam çalışmıyor gibi bi bakılabilir
+//       "@types/*": ["src/types/*"]
+//     }
+//   }
+// }

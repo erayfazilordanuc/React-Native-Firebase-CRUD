@@ -1,0 +1,71 @@
+<svg 
+    width="200" height="200" 
+    viewBox="0 0 200 200" 
+    xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Arka plan (isteğe bağlı) -->
+  <rect width="200" height="200" fill="#ffffff" />
+
+  <!-- React benzeri "atom" halkaları -->
+  <ellipse
+    cx="100" cy="100" 
+    rx="50" ry="15"
+    transform="rotate(0, 100, 100)"
+    stroke="#61DAFB"
+    stroke-width="8"
+    fill="none"
+  />
+  <ellipse
+    cx="100" cy="100" 
+    rx="50" ry="15"
+    transform="rotate(60, 100, 100)"
+    stroke="#61DAFB"
+    stroke-width="8"
+    fill="none"
+  />
+  <ellipse
+    cx="100" cy="100" 
+    rx="50" ry="15"
+    transform="rotate(120, 100, 100)"
+    stroke="#61DAFB"
+    stroke-width="8"
+    fill="none"
+  />
+  <!-- Merkezdeki küçük daire -->
+  <circle 
+    cx="100" 
+    cy="100" 
+    r="8" 
+    fill="#61DAFB" 
+  />
+
+  <!-- Firebase benzeri "alev" -->
+  <!-- Basit, çokgen benzeri bir şekil -->
+  <path
+    d="
+      M105 52 
+      L90 90 
+      L96 98 
+      L94 115
+      L100 125 
+      L106 115 
+      L104 98 
+      L110 90 
+      Z
+    "
+    fill="#FFA611"
+  />
+  
+  <!-- İkinci renk tonunu göstermek için basit alt kısım -->
+  <path
+    d="
+      M90 90 
+      C95 95, 95 105, 100 110
+      C105 105, 105 95, 110 90
+      L100 125
+      Z
+    "
+    fill="#FFCB2B"
+    opacity="0.8"
+  />
+</svg>
